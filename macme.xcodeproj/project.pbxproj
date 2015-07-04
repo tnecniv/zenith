@@ -12,6 +12,7 @@
 		266A2D661B473C5900D890D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 266A2D651B473C5900D890D6 /* Images.xcassets */; };
 		266A2D691B473C5900D890D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 266A2D671B473C5900D890D6 /* Main.storyboard */; };
 		266A2D751B473C5900D890D6 /* macmeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D741B473C5900D890D6 /* macmeTests.swift */; };
+		266A2D831B47708800D890D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D821B47708800D890D6 /* TestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		266A2D6E1B473C5900D890D6 /* macmeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macmeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		266A2D731B473C5900D890D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		266A2D741B473C5900D890D6 /* macmeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macmeTests.swift; sourceTree = "<group>"; };
+		266A2D821B47708800D890D6 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				266A2D651B473C5900D890D6 /* Images.xcassets */,
 				266A2D671B473C5900D890D6 /* Main.storyboard */,
 				266A2D5F1B473C5900D890D6 /* Supporting Files */,
+				266A2D821B47708800D890D6 /* TestViewController.swift */,
 			);
 			path = macme;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				266A2D641B473C5900D890D6 /* ViewController.swift in Sources */,
+				266A2D831B47708800D890D6 /* TestViewController.swift in Sources */,
 				266A2D621B473C5900D890D6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
