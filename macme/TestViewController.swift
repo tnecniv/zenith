@@ -12,21 +12,46 @@ class TestViewController: NSViewController {
     
     @IBOutlet var text: NSTextView!
     var task: NSTask = NSTask()
-    var pipe: NSPipe = NSPipe()
-    var handle: NSFileHandle = NSFileHandle()
+    var inPipe: NSPipe = NSPipe()
+    var outPipe: NSPipe = NSPipe()
+    var inHandle: NSFileHandle = NSFileHandle()
+    var outHandle: NSFileHandle = NSFileHandle()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         task.currentDirectoryPath = "~"
-        task.launchPath = "/bin/echo"
-        task.standardOutput = pipe;
-        task.launch();
-        handle = pipe.fileHandleForReading;
+        task.launchPath = "/bin/bash"
+        task.arguments = ["-i"]
+        //task.arguments = ["/Users/tnecniv/.vimrc"]
+        task.standardOutput = inPipe
+        task.standardInput = outPipe
+        inHandle = inPipe.fileHandleForReading
+        outHandle = outPipe.fileHandleForWriting
+        task.launch()
+        
+        outHandle.writeData(("echo poop\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
+        outHandle.writeData(("echo butts\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
+        //outHandle.closeFile()
+    }
+    
+    func spawnProcess(path: String, args: [String], dir: String) -> (NSTask, NSFileHandle, NSFileHandle) {
+        var t = NSTask()
+        var pi = NSPipe()
+        var po = NSPipe()
+        t.currentDirectoryPath = dir
+        t.launchPath = path
+        t.arguments = args
+        t.standardInput = pi
+        t.standardOutput = po
+        t.launch()
+        
+        return (t, pi.fileHandleForReading, po.fileHandleForWriting)
     }
     
     @IBAction func clicked(sender: NSButton) {
-        text.string = NSString(data: handle.readDataOfLength(1), encoding:NSUTF8StringEncoding) as? String
+        
+        text.insertText(NSString(data: inHandle.readDataOfLength(1), encoding:NSUTF8StringEncoding) as! String)
         
     }
     
