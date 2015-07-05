@@ -16,6 +16,8 @@ class TestViewController: NSViewController {
     var outPipe: NSPipe = NSPipe()
     var inHandle: NSFileHandle = NSFileHandle()
     var outHandle: NSFileHandle = NSFileHandle()
+    var p = MarkupParser(markedText: "Foo <c r>bar</c> baz")
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,7 @@ class TestViewController: NSViewController {
         outHandle.writeData(("echo poop\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         outHandle.writeData(("echo butts\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         //outHandle.closeFile()
+        
     }
     
     func spawnProcess(path: String, args: [String], dir: String) -> (NSTask, NSFileHandle, NSFileHandle) {
@@ -51,7 +54,9 @@ class TestViewController: NSViewController {
     
     @IBAction func clicked(sender: NSButton) {
         
-        text.insertText(NSString(data: inHandle.readDataOfLength(1), encoding:NSUTF8StringEncoding) as! String)
+        //text.insertText(NSString(data: inHandle.readDataOfLength(1), encoding:NSUTF8StringEncoding) as! String)
+        text.string = p.unmarkedText
+        text.setTextColor(NSColor.redColor(), range: p.ranges[0])
         
     }
     
