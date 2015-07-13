@@ -8,6 +8,7 @@
 
 import Cocoa
 import XCTest
+import macme
 
 class macmeTests: XCTestCase {
     
@@ -22,7 +23,6 @@ class macmeTests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
         XCTAssert(true, "Pass")
     }
     

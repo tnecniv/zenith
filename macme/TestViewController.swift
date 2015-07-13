@@ -22,7 +22,7 @@ class TestViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        task.currentDirectoryPath = "~"
+        /*task.currentDirectoryPath = "~"
         task.launchPath = "/bin/bash"
         task.arguments = ["-i"]
         //task.arguments = ["/Users/tnecniv/.vimrc"]
@@ -34,7 +34,12 @@ class TestViewController: NSViewController {
         
         outHandle.writeData(("echo poop\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         outHandle.writeData(("echo butts\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
-        //outHandle.closeFile()
+        //outHandle.closeFile()*/
+        var p: Plumber = Plumber(path: "~/test.plumb")
+        var msg = PlumberMessage()
+        msg.type = "text"
+        msg.data = [UInt8]("~/horse.gif".utf8)
+        p.plumb(msg)
         
     }
     
