@@ -36,10 +36,12 @@ class TestViewController: NSViewController {
         outHandle.writeData(("echo butts\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         //outHandle.closeFile()*/
         var p: Plumber = Plumber(path: "~/test.plumb")
-        var msg = PlumberMessage()
-        msg.type = "text"
-        msg.data = [UInt8]("~/horse.gif".utf8)
-        p.plumb(msg)
+        //var msg = PlumberMessage()
+        //msg.type = "text"
+        //msg.data = [UInt8]("~/horse.gif".utf8)
+        //p.plumb(msg)
+        var result = p.lex("type is ")
+        print(result)
         
     }
     

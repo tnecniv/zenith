@@ -18,7 +18,14 @@ struct PlumberMessage {
     var data: [UInt8] = []
 }
 
-struct PlumbResult {
+enum PlumberLexResult {
+    case Definition(String, String)
+    case RuleOrAction(String, String, String)
+    case Include(String)
+    case LexError(String?)
+}
+
+enum PlumbResult {
     
 }
 
@@ -46,6 +53,66 @@ class Plumber {
         var currentRule: PlumberRule = PlumberRule()
         var content: String = NSString(contentsOfFile: path.stringByExpandingTildeInPath, encoding: NSASCIIStringEncoding, error: nil) as! String
         lines = split(content, allowEmptySlices: true, isSeparator: {(c: Character) -> Bool in return c == "\n" })
+    }
+    
+    func lex(line: String) -> PlumberLexResult {
+        var first: String = ""
+        var second: String = ""
+        var rest: String = ""
+        var mode: Int = 0;
+        var eatWhitespace: Bool = true
+        var error: String = ""
+        
+        for c in Range(start: line.unicodeScalars.startIndex, end: line.unicodeScalars.endIndex) {
+            switch mode {
+            case 0:
+                if NSCharacterSet.whitespaceCharacterSet().longCharacterIsMember(line.unicodeScalars[c].value) {
+                    if eatWhitespace {
+                        continue
+                    } else {
+                        eatWhitespace = true
+                        mode = 1;
+                    }
+                } else if line.unicodeScalars[c] == "=" {
+                    var value: String = ""
+                    
+                    for x in Range(start: c.successor(), end: line.unicodeScalars.endIndex) {
+                        value.append(line.unicodeScalars[x])
+                    }
+                    
+                    return .Definition(first, value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
+                } else {
+                    eatWhitespace = false
+                    first.append(line.unicodeScalars[c])
+                }
+            case 1:
+                if NSCharacterSet.whitespaceCharacterSet().longCharacterIsMember(line.unicodeScalars[c].value) {
+                    if eatWhitespace {
+                        continue
+                    } else {
+                        eatWhitespace = true
+                        mode = 2
+                    }
+                } else {
+                    eatWhitespace = false
+                    second.append(line.unicodeScalars[c])
+                }
+            case 2:
+                rest.append(line.unicodeScalars[c])
+            default:
+                return .LexError(error)
+            }
+        }
+        
+        if first == "" || second == "" {
+            return .LexError("Line incomplete")
+        } else if first == "include" {
+            return .Include(second + rest)
+        } else if rest == "" {
+            return .LexError("Expected argument")
+        } else {
+            return .RuleOrAction(first, second, rest)
+        }
     }
     
     func evalArg(s: String, defs: Dictionary<String, String>) -> String {
