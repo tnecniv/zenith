@@ -35,14 +35,14 @@ class TestViewController: NSViewController {
         outHandle.writeData(("echo poop\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         outHandle.writeData(("echo butts\r\n" as NSString).dataUsingEncoding(NSASCIIStringEncoding)!)
         //outHandle.closeFile()*/
-        var p: Plumber = Plumber(path: "~/test.plumb")
-        //var msg = PlumberMessage()
-        //msg.type = "text"
-        //msg.data = [UInt8]("~/horse.gif".utf8)
-        //p.plumb(msg)
-        var result = p.lex("type is ")
-        print(result)
+        var p: Plumber = Plumber(path: "~/plumb.plumb")
+        var msg = PlumberMessage()
+        msg.type = "text"
+        msg.data = [UInt8]("http://www.google.com".utf8)
+        msg.dst = "image"
+        p.plumb(msg)
         
+        print("woo!")
     }
     
     func spawnProcess(path: String, args: [String], dir: String) -> (NSTask, NSFileHandle, NSFileHandle) {

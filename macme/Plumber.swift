@@ -195,6 +195,8 @@ class Plumber {
                     } else {
                         ret += "" // Shell doesnt error on undefs, they are just empty
                     }
+                    
+                    ret.append(c)
                 } else {
                     ret.append(c)
                 }
@@ -225,12 +227,14 @@ class Plumber {
             
             if line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
                 || line[line.startIndex] == "#" {
-                    if skipRule {
+                    if !skipRule && action != .None {
+                        return action
+                    } else {
                         skipRule = false
                         msg = message // Reset for next rule
                         action = .None
-                    } else if action != .None {
-                        return action
+                        
+                        continue
                     }
             }
             
@@ -238,7 +242,7 @@ class Plumber {
             
             switch (lexResult) {
             case .Definition(let name, let value):
-                defs["$" + name] = value
+                defs["$" + name] = evalArg(value, defs: defs)
             case .Include(let path):
                 print("nop")
             case .Rule(let first, let second, let third):
@@ -378,8 +382,11 @@ class Plumber {
                 } else if second == "client" {
                     if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
                     else if action != PlumbResult.None { return .Error(String(lineNum) + ": Cannont have a second action in rule") }
+                    else { action = .Client(eThird) }
                 } else if second == "start" {
                     if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
+                    else if action != PlumbResult.None { return .Error(String(lineNum) + ": Cannont have a second action in rule") }
+                    else { action = .Start(eThird) }
                 } else {
                     return .Error(String(lineNum) + ": Expected action as second word")
                 }
