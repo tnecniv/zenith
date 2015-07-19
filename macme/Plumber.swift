@@ -20,13 +20,14 @@ struct PlumberMessage {
 
 enum PlumberLexResult {
     case Definition(String, String)
-    case RuleOrAction(String, String, String)
+    case Rule(String, String, String)
     case Include(String)
-    case LexError(String?)
+    case Error(String?)
 }
 
 enum PlumbResult {
-    
+    case Error(String?)
+    case Success
 }
 
 struct PlumberRule {
@@ -100,18 +101,18 @@ class Plumber {
             case 2:
                 rest.append(line.unicodeScalars[c])
             default:
-                return .LexError(error)
+                return .Error(error)
             }
         }
         
         if first == "" || second == "" {
-            return .LexError("Line incomplete")
+            return .Error("Line incomplete")
         } else if first == "include" {
             return .Include(second + rest)
         } else if rest == "" {
-            return .LexError("Expected argument")
+            return .Error("Expected argument")
         } else {
-            return .RuleOrAction(first, second, rest)
+            return .Rule(first, second, rest)
         }
     }
     
@@ -197,157 +198,170 @@ class Plumber {
         return ret;
     }
     
-    func plumb(message: PlumberMessage) {
+    func plumb(message: PlumberMessage) -> PlumbResult {
         var defs: Dictionary<String, String> = Dictionary<String, String>()
         var badParse: Bool = false
         var skipRule: Bool = false
         var msg = message
+        var lineNum: Int = 0
         
         for line in lines {
+            lineNum = lineNum + 1
+            
             if skipRule {
-                if line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+                if line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
+                    || line[line.startIndex] == "#" {
                     skipRule = false
                 }
                 
                 continue
-            } else {
-                if let equals = line.rangeOfString("=") {
-                    
-                }
             }
-
-            var words = split(line, allowEmptySlices: true, isSeparator: {(c: Character) -> Bool in return c == " " })
-            words[2] = evalArg(words[2], defs: defs)
             
-            if words[1] == "is" {
-                if words[0] == "src" {
-                    skipRule = !(msg.src == words[2])
-                } else if words[0] == "dst" {
-                    skipRule = !(msg.dst == words[2])
-                } else if words[0] == "wdir" {
-                    skipRule = !(msg.wdir == words[2])
-                } else if words[0] == "type" {
-                    skipRule = !(msg.type == words[2])
-                } else if words[0] == "ndata" {
-                    skipRule = !(count(msg.data) == words[2].toInt())
-                } else if words[0] == "data" {
-                    skipRule = !(msg.data == ([UInt8](words[2].utf8)))
-                } else {
+            var lexResult = lex(line)
+            
+            switch (lexResult) {
+            case .Definition(let name, let value):
+                defs["$" + name] = value
+            case .Include(let path):
+                print("nop")
+            case .Rule(let first, let second, let third):
+                var eThird = evalArg(third, defs: defs)
+                
+                if second == "is" {
+                    if first == "src" {
+                        skipRule = !(msg.src == eThird)
+                    } else if first == "dst" {
+                        skipRule = !(msg.dst == eThird)
+                    } else if first == "wdir" {
+                        skipRule = !(msg.wdir == eThird)
+                    } else if first == "type" {
+                        skipRule = !(msg.type == eThird)
+                    } else if first == "ndata" {
+                        skipRule = !(count(msg.data) == eThird.toInt())
+                    } else if first == "data" {
+                        skipRule = !(msg.data == ([UInt8](eThird.utf8)))
+                    } else {
+                        return .Error(String(lineNum) + ": Expected object as first word")
+                    }
+                } else if second == "isdir" {
+                    var isDir: ObjCBool = false
+                    var dir: String = ""
+                    var exists: Bool = false
                     
-                }
-            } else if words[1] == "isdir" {
-                var isDir: ObjCBool = false
-                var dir: String = ""
-                var exists: Bool = false
-                
-                if words[0] == "src" {
-                    dir = msg.src
-                } else if words[0] == "dst" {
-                    dir = msg.dst
-                } else if words[0] == "wdir" {
-                    dir = msg.wdir
-                } else if words[0] == "type" {
-                    dir = msg.type
-                } else if words[0] == "ndata" {
-                    dir = String(count(msg.data))
-                } else if words[0] == "data" {
-                    dir = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
-                } else if words[0] == "arg" {
-                    dir = words[2]
-                } else {
+                    if first == "src" {
+                        dir = msg.src
+                    } else if first == "dst" {
+                        dir = msg.dst
+                    } else if first == "wdir" {
+                        dir = msg.wdir
+                    } else if first == "type" {
+                        dir = msg.type
+                    } else if first == "ndata" {
+                        dir = String(count(msg.data))
+                    } else if first == "data" {
+                        dir = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
+                    } else if first == "arg" {
+                        dir = eThird
+                    } else {
+                        return .Error(String(lineNum) + ": Expected object as first word")
+                    }
                     
-                }
-                
-                if words[0] == "arg" {
-                    exists = fileMgr.fileExistsAtPath(dir.stringByExpandingTildeInPath, isDirectory: &isDir)
-                } else {
-                    exists = fileMgr.fileExistsAtPath(words[2] + "/" + dir.stringByExpandingTildeInPath, isDirectory: &isDir)
-                }
-                
-                skipRule = !(exists && isDir)
-                
-                if !skipRule {
-                    defs["$dir"] = words[2]
-                }
-            } else if words[1] == "isfile" {
-                var file: String = ""
-                var exists: Bool = false
-                var isDir: ObjCBool = false
-                
-                if words[0] == "src" {
-                    file = msg.src
-                } else if words[0] == "dst" {
-                    file = msg.dst
-                } else if words[0] == "wdir" {
-                    file = msg.wdir
-                } else if words[0] == "type" {
-                    file = msg.type
-                } else if words[0] == "ndata" {
-                    file = String(count(msg.data))
-                } else if words[0] == "data" {
-                    file = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
-                } else if words[0] == "arg" {
-                    file = words[2]
-                } else {
+                    if first == "arg" {
+                        exists = fileMgr.fileExistsAtPath(dir.stringByExpandingTildeInPath, isDirectory: &isDir)
+                    } else {
+                        exists = fileMgr.fileExistsAtPath(eThird + "/" + dir.stringByExpandingTildeInPath, isDirectory: &isDir)
+                    }
                     
-                }
-                
-                if words[0] == "arg" {
-                    exists = fileMgr.fileExistsAtPath(file.stringByExpandingTildeInPath, isDirectory: &isDir)
-                } else {
-                    exists = fileMgr.fileExistsAtPath(words[2] + "/" + file.stringByExpandingTildeInPath, isDirectory: &isDir)
-                }
-                
-                skipRule = !(exists && !isDir)
-                
-                if !skipRule {
-                    defs["$file"] = words[2]
-                }
-            } else if words[1] == "matches" {
-                var str: String = ""
-                
-                if words[0] == "src" {
-                    str = msg.src
-                } else if words[0] == "dst" {
-                    str = msg.dst
-                } else if words[0] == "wdir" {
-                    str = msg.wdir
-                } else if words[0] == "type" {
-                    str = msg.type
-                } else if words[0] == "ndata" {
-                    str = String(count(msg.data))
-                } else if words[0] == "data" {
-                    str = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
-                } else {
+                    skipRule = !(exists && isDir)
                     
-                }
-                
-                var r = Regex(words[2])
-                
-                skipRule = !r.test(str)
-                
-                if !skipRule {
-                    lastCaptureGroup = count(r.captureGroups) - 1
+                    if !skipRule {
+                        defs["$dir"] = eThird
+                    }
+                } else if second == "isfile" {
+                    var file: String = ""
+                    var exists: Bool = false
+                    var isDir: ObjCBool = false
                     
-                    for i in 0...lastCaptureGroup {
-                        defs["$" + String(i)] = r.captureGroups[i]
+                    if first == "src" {
+                        file = msg.src
+                    } else if first == "dst" {
+                        file = msg.dst
+                    } else if first == "wdir" {
+                        file = msg.wdir
+                    } else if first == "type" {
+                        file = msg.type
+                    } else if first == "ndata" {
+                        file = String(count(msg.data))
+                    } else if first == "data" {
+                        file = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
+                    } else if first == "arg" {
+                        file = eThird
+                    } else {
+                        return .Error(String(lineNum) + ": Expected object as first word")
+                    }
+                    
+                    if first == "arg" {
+                        exists = fileMgr.fileExistsAtPath(file.stringByExpandingTildeInPath, isDirectory: &isDir)
+                    } else {
+                        exists = fileMgr.fileExistsAtPath(eThird + "/" + file.stringByExpandingTildeInPath, isDirectory: &isDir)
+                    }
+                    
+                    skipRule = !(exists && !isDir)
+                    
+                    if !skipRule {
+                        defs["$file"] = eThird
+                    }
+                } else if second == "matches" {
+                    var str: String = ""
+                    
+                    if first == "src" {
+                        str = msg.src
+                    } else if first == "dst" {
+                        str = msg.dst
+                    } else if first == "wdir" {
+                        str = msg.wdir
+                    } else if first == "type" {
+                        str = msg.type
+                    } else if first == "ndata" {
+                        str = String(count(msg.data))
+                    } else if first == "data" {
+                        str = NSString(bytes: msg.data, length: count(msg.data), encoding: NSUTF8StringEncoding) as! String
+                    } else {
+                        return .Error(String(lineNum) + ": Expected object as first word")
+                    }
+                    
+                    var r = Regex(eThird)
+                    
+                    skipRule = !r.test(str)
+                    
+                    if !skipRule {
+                        lastCaptureGroup = count(r.captureGroups) - 1
+                        
+                        for i in 0...lastCaptureGroup {
+                            defs["$" + String(i)] = r.captureGroups[i]
+                        }
+                    }
+                } else if second == "set" {
+                    if first == "src" {
+                        msg.src = eThird
+                    } else if first == "dst" {
+                        msg.dst = eThird
+                    } else if first == "wdir" {
+                        msg.dst = eThird
+                    } else if first == "type" {
+                        msg.dst = eThird
+                    } else if first == "data" {
+                        msg.data = [UInt8](eThird.utf8)
+                    } else {
+                        return .Error(String(lineNum) + ": Expected object as first word")
                     }
                 }
-            } else if words[1] == "set" {
-                if words[0] == "src" {
-                    msg.src = words[2]
-                } else if words[0] == "dst" {
-                    msg.dst = words[2]
-                } else if words[0] == "wdir" {
-                    msg.dst = words[2]
-                } else if words[0] == "type" {
-                    msg.dst = words[2]
-                } else if words[0] == "data" {
-                    msg.data = [UInt8](words[2].utf8)
-                } else {
-                    
-                }
+            case .Error(let errorText):
+                return .Error(errorText)
             }
+
         }
+        
+        return .Success // TODO: Return something real
     }
 }
