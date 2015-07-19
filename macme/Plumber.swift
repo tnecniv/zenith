@@ -27,8 +27,8 @@ enum PlumberLexResult {
 
 enum PlumbResult {
     case Error(String?)
-    case Start(String)
-    case Client(String)
+    case Start(String, [String: String])
+    case Client(String, [String: String])
     case None
 }
 
@@ -36,10 +36,10 @@ func ==(a: PlumbResult, b: PlumbResult) -> Bool {
     switch (a, b) {
     case (.Error(let s1), .Error(let s2)):
         return s1 == s2
-    case (.Start(let s1), .Start(let s2)):
-        return s1 == s2
-    case (.Client(let s1), .Client(let s2)):
-        return s1 == s2
+    case (.Start(let s1, let d1), .Start(let s2, let d2)):
+        return s1 == s2 && d1 == d2
+    case (.Client(let s1, let d1), .Client(let s2, let d2)):
+        return s1 == s2 && d1 == d2
     case (.None, .None):
         return true
     default:
@@ -214,6 +214,55 @@ class Plumber {
         return ret;
     }
     
+    func parseKeyValueList(str: String, defs: Dictionary<String, String>) -> Dictionary<String, String>? {
+        var ret: Dictionary<String, String> = Dictionary<String, String>()
+        var lexingKey: Bool = true
+        var key: String = ""
+        var value: String = ""
+        var singleQuote: Bool = false
+        var doubleQuote: Bool = false
+        var escape: Bool = false
+        
+        for c in str.unicodeScalars {
+            if (lexingKey) {
+                if NSCharacterSet.alphanumericCharacterSet().longCharacterIsMember(c.value) {
+                   key.append(c)
+                } else if c == "=" {
+                    lexingKey = false
+                } else if NSCharacterSet.whitespaceCharacterSet().longCharacterIsMember(c.value) {
+                    // Do nothing!!
+                } else {
+                    return nil
+                }
+            } else {
+                if c == "\\" {
+                    if (escape) { value.append(c); escape = false }
+                    else { escape = true }
+                } else if c == "'" {
+                    if (escape) { value.append(c); escape = false }
+                    else if doubleQuote { value.append(c) }
+                    else { singleQuote = !singleQuote }
+                } else if c == "\"" {
+                    if (escape) { value.append(c); escape = false }
+                    else if singleQuote { value.append(c) }
+                    else { doubleQuote = !singleQuote }
+                } else if !singleQuote && !doubleQuote
+                    && NSCharacterSet.whitespaceCharacterSet().longCharacterIsMember(c.value) {
+                        ret[key] = evalArg(value, defs: defs)
+                        key = ""
+                        value = ""
+                        lexingKey = true
+                } else {
+                    value.append(c)
+                }
+            }
+        }
+        
+        ret[key] = evalArg(value, defs: defs)
+        
+        return ret
+    }
+    
     func plumb(message: PlumberMessage) -> PlumbResult {
         var defs: Dictionary<String, String> = Dictionary<String, String>()
         var badParse: Bool = false
@@ -248,7 +297,23 @@ class Plumber {
             case .Rule(let first, let second, let third):
                 var eThird = evalArg(third, defs: defs)
                 
-                if second == "is" {
+                if second == "add" {
+                    if first != "attr" { return .Error(String(lineNum) + ": Expected `attr' as object") }
+                    else {
+                        if let list = parseKeyValueList(third, defs: defs) {
+                            for key in list.keys {
+                                msg.attr[key] = list[key]
+                            }
+                        } else {
+                            return .Error(String(lineNum) + ": Error parsing key-value list")
+                        }
+                    }
+                } else if second == "delete" {
+                    if first != "attr" { return .Error(String(lineNum) + ": Expected `attr' as object") }
+                    else {
+                        msg.attr.removeValueForKey(eThird)
+                    }
+                } else if second == "is" {
                     if first == "src" {
                         skipRule = !(msg.src == eThird)
                     } else if first == "dst" {
@@ -382,11 +447,11 @@ class Plumber {
                 } else if second == "client" {
                     if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
                     else if action != PlumbResult.None { return .Error(String(lineNum) + ": Cannont have a second action in rule") }
-                    else { action = .Client(eThird) }
+                    else { action = .Client(eThird, msg.attr) }
                 } else if second == "start" {
                     if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
                     else if action != PlumbResult.None { return .Error(String(lineNum) + ": Cannont have a second action in rule") }
-                    else { action = .Start(eThird) }
+                    else { action = .Start(eThird, msg.attr) }
                 } else {
                     return .Error(String(lineNum) + ": Expected action as second word")
                 }

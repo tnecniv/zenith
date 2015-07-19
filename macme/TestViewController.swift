@@ -40,7 +40,7 @@ class TestViewController: NSViewController {
         msg.type = "text"
         msg.data = [UInt8]("~/plumb.plumb".utf8)
         msg.dst = "edit"
-        p.plumb(msg)
+        var foo = p.plumb(msg)
         
         print("woo!")
     }
