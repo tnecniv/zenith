@@ -27,16 +27,31 @@ enum PlumberLexResult {
 
 enum PlumbResult {
     case Error(String?)
-    case Success
+    case Start(String)
+    case Client(String)
+    case None
 }
 
-struct PlumberRule {
-    var reqs: [(PlumberMessage) -> Bool] = []
-    var actions: [() -> Bool] = []
+func ==(a: PlumbResult, b: PlumbResult) -> Bool {
+    switch (a, b) {
+    case (.Error(let s1), .Error(let s2)):
+        return s1 == s2
+    case (.Start(let s1), .Start(let s2)):
+        return s1 == s2
+    case (.Client(let s1), .Client(let s2)):
+        return s1 == s2
+    case (.None, .None):
+        return true
+    default:
+        return false
+    }
+}
+
+func !=(a: PlumbResult, b: PlumbResult) -> Bool {
+    return !(a == b)
 }
 
 class Plumber {
-    var rules: [PlumberRule] = []
     var plumbFileContent: String = "";
     var lines: [String] = []
     var fileMgr: NSFileManager = NSFileManager()
@@ -51,7 +66,6 @@ class Plumber {
     
     func loadFile(path: String) {
         var error: NSError?
-        var currentRule: PlumberRule = PlumberRule()
         var content: String = NSString(contentsOfFile: path.stringByExpandingTildeInPath, encoding: NSASCIIStringEncoding, error: nil) as! String
         lines = split(content, allowEmptySlices: true, isSeparator: {(c: Character) -> Bool in return c == "\n" })
     }
@@ -202,19 +216,22 @@ class Plumber {
         var defs: Dictionary<String, String> = Dictionary<String, String>()
         var badParse: Bool = false
         var skipRule: Bool = false
-        var msg = message
         var lineNum: Int = 0
+        var action: PlumbResult = .None
+        var msg = message
         
         for line in lines {
             lineNum = lineNum + 1
             
-            if skipRule {
-                if line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
-                    || line[line.startIndex] == "#" {
-                    skipRule = false
-                }
-                
-                continue
+            if line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == ""
+                || line[line.startIndex] == "#" {
+                    if skipRule {
+                        skipRule = false
+                        msg = message // Reset for next rule
+                        action = .None
+                    } else if action != .None {
+                        return action
+                    }
             }
             
             var lexResult = lex(line)
@@ -355,6 +372,16 @@ class Plumber {
                     } else {
                         return .Error(String(lineNum) + ": Expected object as first word")
                     }
+                } else if second == "to" {
+                    if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
+                    else if msg.dst != eThird { skipRule = true }
+                } else if second == "client" {
+                    if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
+                    else if action != PlumbResult.None { return .Error(String(lineNum) + ": Cannont have a second action in rule") }
+                } else if second == "start" {
+                    if first != "plumb" { return .Error(String(lineNum) + ": Expected `plumb' as first word") }
+                } else {
+                    return .Error(String(lineNum) + ": Expected action as second word")
                 }
             case .Error(let errorText):
                 return .Error(errorText)
@@ -362,6 +389,6 @@ class Plumber {
 
         }
         
-        return .Success // TODO: Return something real
+        return action
     }
 }
