@@ -25,10 +25,14 @@ class Regex {
         if let match = internalExpression.firstMatchInString(input, options: nil, range:NSMakeRange(0, count(input))) {
             for i in 0...(match.numberOfRanges - 1) {
                 let range = match.rangeAtIndex(i)
-                let nsinput: NSString = NSString(string: input)
-                let sub = nsinput.substringWithRange(range)
                 
-                captureGroups.append(sub)
+                if range.location != NSNotFound {
+                
+                    let nsinput: NSString = NSString(string: input)
+                    let sub = nsinput.substringWithRange(range)
+                
+                    captureGroups.append(sub)
+                }
             }
             
             return true

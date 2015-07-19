@@ -38,8 +38,8 @@ class TestViewController: NSViewController {
         var p: Plumber = Plumber(path: "~/plumb.plumb")
         var msg = PlumberMessage()
         msg.type = "text"
-        msg.data = [UInt8]("http://www.google.com".utf8)
-        msg.dst = "image"
+        msg.data = [UInt8]("~/plumb.plumb".utf8)
+        msg.dst = "edit"
         p.plumb(msg)
         
         print("woo!")
