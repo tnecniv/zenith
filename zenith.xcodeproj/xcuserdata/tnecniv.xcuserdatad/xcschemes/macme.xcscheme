@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "266A2D5B1B473C5900D890D6"
-               BuildableName = "macme.app"
-               BlueprintName = "macme"
-               ReferencedContainer = "container:macme.xcodeproj">
+               BuildableName = "zenith.app"
+               BlueprintName = "zenith"
+               ReferencedContainer = "container:zenith.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "266A2D6D1B473C5900D890D6"
-               BuildableName = "macmeTests.xctest"
-               BlueprintName = "macmeTests"
-               ReferencedContainer = "container:macme.xcodeproj">
+               BuildableName = "zenithTests.xctest"
+               BlueprintName = "zenithTests"
+               ReferencedContainer = "container:zenith.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "266A2D6D1B473C5900D890D6"
-               BuildableName = "macmeTests.xctest"
-               BlueprintName = "macmeTests"
-               ReferencedContainer = "container:macme.xcodeproj">
+               BuildableName = "zenithTests.xctest"
+               BlueprintName = "zenithTests"
+               ReferencedContainer = "container:zenith.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "266A2D5B1B473C5900D890D6"
-            BuildableName = "macme.app"
-            BlueprintName = "macme"
-            ReferencedContainer = "container:macme.xcodeproj">
+            BuildableName = "zenith.app"
+            BlueprintName = "zenith"
+            ReferencedContainer = "container:zenith.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "266A2D5B1B473C5900D890D6"
-            BuildableName = "macme.app"
-            BlueprintName = "macme"
-            ReferencedContainer = "container:macme.xcodeproj">
+            BuildableName = "zenith.app"
+            BlueprintName = "zenith"
+            ReferencedContainer = "container:zenith.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "266A2D5B1B473C5900D890D6"
-            BuildableName = "macme.app"
-            BlueprintName = "macme"
-            ReferencedContainer = "container:macme.xcodeproj">
+            BuildableName = "zenith.app"
+            BlueprintName = "zenith"
+            ReferencedContainer = "container:zenith.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

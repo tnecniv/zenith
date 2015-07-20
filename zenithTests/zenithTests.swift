@@ -8,7 +8,7 @@
 
 import Cocoa
 import XCTest
-import macme
+import zenith
 
 class macmeTests: XCTestCase {
     
