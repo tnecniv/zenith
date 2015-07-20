@@ -11,7 +11,7 @@
 		266A2D641B473C5900D890D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D631B473C5900D890D6 /* ViewController.swift */; };
 		266A2D661B473C5900D890D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 266A2D651B473C5900D890D6 /* Images.xcassets */; };
 		266A2D691B473C5900D890D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 266A2D671B473C5900D890D6 /* Main.storyboard */; };
-		266A2D751B473C5900D890D6 /* macmeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D741B473C5900D890D6 /* macmeTests.swift */; };
+		266A2D751B473C5900D890D6 /* zenithTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D741B473C5900D890D6 /* zenithTests.swift */; };
 		266A2D831B47708800D890D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D821B47708800D890D6 /* TestViewController.swift */; };
 		266A2D851B482F6900D890D6 /* MarkupParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D841B482F6900D890D6 /* MarkupParser.swift */; };
 		266A2D891B4A08C000D890D6 /* Plumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266A2D881B4A08C000D890D6 /* Plumber.swift */; };
@@ -30,15 +30,15 @@
 
 /* Begin PBXFileReference section */
 		261571B61B52D001005E9BA8 /* play.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = play.playground; sourceTree = "<group>"; };
-		266A2D5C1B473C5900D890D6 /* macme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macme.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		266A2D5C1B473C5900D890D6 /* zenith.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zenith.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		266A2D601B473C5900D890D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		266A2D611B473C5900D890D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		266A2D631B473C5900D890D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		266A2D651B473C5900D890D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		266A2D681B473C5900D890D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		266A2D6E1B473C5900D890D6 /* macmeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macmeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		266A2D6E1B473C5900D890D6 /* zenithTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = zenithTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		266A2D731B473C5900D890D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		266A2D741B473C5900D890D6 /* macmeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macmeTests.swift; sourceTree = "<group>"; };
+		266A2D741B473C5900D890D6 /* zenithTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zenithTests.swift; sourceTree = "<group>"; };
 		266A2D821B47708800D890D6 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		266A2D841B482F6900D890D6 /* MarkupParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkupParser.swift; sourceTree = "<group>"; };
 		266A2D881B4A08C000D890D6 /* Plumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plumber.swift; sourceTree = "<group>"; };
@@ -67,8 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				261571B61B52D001005E9BA8 /* play.playground */,
-				266A2D5E1B473C5900D890D6 /* macme */,
-				266A2D711B473C5900D890D6 /* macmeTests */,
+				266A2D5E1B473C5900D890D6 /* zenith */,
+				266A2D711B473C5900D890D6 /* zenithTests */,
 				266A2D5D1B473C5900D890D6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,13 +76,13 @@
 		266A2D5D1B473C5900D890D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				266A2D5C1B473C5900D890D6 /* macme.app */,
-				266A2D6E1B473C5900D890D6 /* macmeTests.xctest */,
+				266A2D5C1B473C5900D890D6 /* zenith.app */,
+				266A2D6E1B473C5900D890D6 /* zenithTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		266A2D5E1B473C5900D890D6 /* macme */ = {
+		266A2D5E1B473C5900D890D6 /* zenith */ = {
 			isa = PBXGroup;
 			children = (
 				266A2D611B473C5900D890D6 /* AppDelegate.swift */,
@@ -95,7 +95,7 @@
 				266A2D881B4A08C000D890D6 /* Plumber.swift */,
 				266A2D8A1B4F67BD00D890D6 /* Regex.swift */,
 			);
-			path = macme;
+			path = zenith;
 			sourceTree = "<group>";
 		};
 		266A2D5F1B473C5900D890D6 /* Supporting Files */ = {
@@ -106,13 +106,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		266A2D711B473C5900D890D6 /* macmeTests */ = {
+		266A2D711B473C5900D890D6 /* zenithTests */ = {
 			isa = PBXGroup;
 			children = (
-				266A2D741B473C5900D890D6 /* macmeTests.swift */,
+				266A2D741B473C5900D890D6 /* zenithTests.swift */,
 				266A2D721B473C5900D890D6 /* Supporting Files */,
 			);
-			path = macmeTests;
+			path = zenithTests;
 			sourceTree = "<group>";
 		};
 		266A2D721B473C5900D890D6 /* Supporting Files */ = {
@@ -126,9 +126,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		266A2D5B1B473C5900D890D6 /* macme */ = {
+		266A2D5B1B473C5900D890D6 /* zenith */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 266A2D781B473C5900D890D6 /* Build configuration list for PBXNativeTarget "macme" */;
+			buildConfigurationList = 266A2D781B473C5900D890D6 /* Build configuration list for PBXNativeTarget "zenith" */;
 			buildPhases = (
 				266A2D581B473C5900D890D6 /* Sources */,
 				266A2D591B473C5900D890D6 /* Frameworks */,
@@ -138,14 +138,14 @@
 			);
 			dependencies = (
 			);
-			name = macme;
+			name = zenith;
 			productName = macme;
-			productReference = 266A2D5C1B473C5900D890D6 /* macme.app */;
+			productReference = 266A2D5C1B473C5900D890D6 /* zenith.app */;
 			productType = "com.apple.product-type.application";
 		};
-		266A2D6D1B473C5900D890D6 /* macmeTests */ = {
+		266A2D6D1B473C5900D890D6 /* zenithTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 266A2D7B1B473C5900D890D6 /* Build configuration list for PBXNativeTarget "macmeTests" */;
+			buildConfigurationList = 266A2D7B1B473C5900D890D6 /* Build configuration list for PBXNativeTarget "zenithTests" */;
 			buildPhases = (
 				266A2D6A1B473C5900D890D6 /* Sources */,
 				266A2D6B1B473C5900D890D6 /* Frameworks */,
@@ -156,9 +156,9 @@
 			dependencies = (
 				266A2D701B473C5900D890D6 /* PBXTargetDependency */,
 			);
-			name = macmeTests;
+			name = zenithTests;
 			productName = macmeTests;
-			productReference = 266A2D6E1B473C5900D890D6 /* macmeTests.xctest */;
+			productReference = 266A2D6E1B473C5900D890D6 /* zenithTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -179,7 +179,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 266A2D571B473C5900D890D6 /* Build configuration list for PBXProject "macme" */;
+			buildConfigurationList = 266A2D571B473C5900D890D6 /* Build configuration list for PBXProject "zenith" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -192,8 +192,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				266A2D5B1B473C5900D890D6 /* macme */,
-				266A2D6D1B473C5900D890D6 /* macmeTests */,
+				266A2D5B1B473C5900D890D6 /* zenith */,
+				266A2D6D1B473C5900D890D6 /* zenithTests */,
 			);
 		};
 /* End PBXProject section */
@@ -235,7 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				266A2D751B473C5900D890D6 /* macmeTests.swift in Sources */,
+				266A2D751B473C5900D890D6 /* zenithTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +244,7 @@
 /* Begin PBXTargetDependency section */
 		266A2D701B473C5900D890D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 266A2D5B1B473C5900D890D6 /* macme */;
+			target = 266A2D5B1B473C5900D890D6 /* zenith */;
 			targetProxy = 266A2D6F1B473C5900D890D6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -346,9 +346,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = macme/Info.plist;
+				INFOPLIST_FILE = zenith/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = zenith;
 			};
 			name = Debug;
 		};
@@ -357,9 +357,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = macme/Info.plist;
+				INFOPLIST_FILE = zenith/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = zenith;
 			};
 			name = Release;
 		};
@@ -376,10 +376,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = macmeTests/Info.plist;
+				INFOPLIST_FILE = zenithTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macme.app/Contents/MacOS/macme";
+				PRODUCT_NAME = zenithTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zenith.app/Contents/MacOS/zenith";
 			};
 			name = Debug;
 		};
@@ -392,17 +392,17 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = macmeTests/Info.plist;
+				INFOPLIST_FILE = zenithTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macme.app/Contents/MacOS/macme";
+				PRODUCT_NAME = zenithTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zenithapp/Contents/MacOS/zenith";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		266A2D571B473C5900D890D6 /* Build configuration list for PBXProject "macme" */ = {
+		266A2D571B473C5900D890D6 /* Build configuration list for PBXProject "zenith" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				266A2D761B473C5900D890D6 /* Debug */,
@@ -411,7 +411,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		266A2D781B473C5900D890D6 /* Build configuration list for PBXNativeTarget "macme" */ = {
+		266A2D781B473C5900D890D6 /* Build configuration list for PBXNativeTarget "zenith" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				266A2D791B473C5900D890D6 /* Debug */,
@@ -420,7 +420,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		266A2D7B1B473C5900D890D6 /* Build configuration list for PBXNativeTarget "macmeTests" */ = {
+		266A2D7B1B473C5900D890D6 /* Build configuration list for PBXNativeTarget "zenithTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				266A2D7C1B473C5900D890D6 /* Debug */,
