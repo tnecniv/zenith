@@ -4,6 +4,7 @@
 
 ```
 $ npm install -g electron typescript typings
+$ npm install
 $ typings install
 ```
 
