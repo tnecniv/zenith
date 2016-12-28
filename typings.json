@@ -2,5 +2,6 @@
   "globalDependencies": {
     "electron": "registry:dt/electron#1.4.8+20161220141501",
     "node": "registry:dt/node#6.0.0+20161227094133"
-  }
+  },
+  "dependencies": {}
 }

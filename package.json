@@ -14,5 +14,9 @@
   "bugs": {
     "url": "https://github.com/Tnecniv/zenith/issues"
   },
-  "homepage": "https://github.com/Tnecniv/zenith#readme"
+  "homepage": "https://github.com/Tnecniv/zenith#readme",
+  "dependencies": {
+    "@types/codemirror": "^0.0.35",
+    "codemirror": "^5.22.0"
+  }
 }
