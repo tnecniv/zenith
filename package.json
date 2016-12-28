@@ -1,0 +1,18 @@
+{
+  "name": "zenith",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tnecniv/zenith.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/Tnecniv/zenith/issues"
+  },
+  "homepage": "https://github.com/Tnecniv/zenith#readme"
+}
