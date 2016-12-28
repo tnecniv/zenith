@@ -11,7 +11,7 @@ $ typings install
 ## Build
 
 ```
-$ tsc
+$ tsc [--watch]
 ```
 
 ## Run
